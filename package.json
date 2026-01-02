@@ -1,0 +1,31 @@
+{
+  "name": "todo-app",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@todo-app/web",
+    "dev:api": "cd apps/api && uvicorn app.main:app --reload --port 8000",
+    "build": "npm run build --workspace=@todo-app/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:api": "cd apps/api && ruff check .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run test --workspaces --if-present",
+    "test:api": "cd apps/api && pytest",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules apps/*/.next"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "caniuse-lite": "^1.0.30001762"
+  }
+}

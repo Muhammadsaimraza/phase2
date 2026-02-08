@@ -5,7 +5,6 @@
  */
 
 import { forwardRef, type ButtonHTMLAttributes } from "react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib";
 import { SpinnerIcon } from "./icons";
 
@@ -45,9 +44,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       children,
-      onDrag: _onDrag,
-      onDragStart: _onDragStart,
-      onDragEnd: _onDragEnd,
       ...props
     },
     ref
@@ -55,14 +51,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled = disabled || isLoading;
 
     return (
-      <motion.button
+      <button
         ref={ref}
-        whileHover={isDisabled ? undefined : { scale: 1.02 }}
-        whileTap={isDisabled ? undefined : { scale: 0.98 }}
         className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors",
+          "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all",
+          "hover:scale-[1.02] active:scale-[0.98]",
           "focus:outline-none focus:ring-2 focus:ring-offset-0",
-          "disabled:cursor-not-allowed disabled:opacity-50",
+          "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100",
           variantStyles[variant],
           sizeStyles[size],
           className
@@ -82,7 +77,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             {rightIcon && <span className="shrink-0">{rightIcon}</span>}
           </>
         )}
-      </motion.button>
+      </button>
     );
   }
 );

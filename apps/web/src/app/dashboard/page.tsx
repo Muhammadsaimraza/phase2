@@ -96,7 +96,7 @@ function DashboardContent() {
                 Welcome back! 👋
               </h2>
               <p className="text-gray-300">
-                Let's make today productive. Manage your tasks efficiently and track your progress.
+                Let&apos;s make today productive. Manage your tasks efficiently and track your progress.
               </p>
             </div>
           </motion.div>

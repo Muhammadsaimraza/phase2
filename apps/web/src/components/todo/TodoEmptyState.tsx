@@ -106,7 +106,7 @@ export function TodoEmptyState({
             transition={{ delay: 0.2 }}
             className="mt-3 text-base text-gray-600 max-w-sm"
           >
-            Start your productivity journey by creating your first task. Let's make today productive! 🚀
+            Start your productivity journey by creating your first task. Let&apos;s make today productive! 🚀
           </motion.p>
           {onCreateTodo && (
             <motion.div

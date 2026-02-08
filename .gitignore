@@ -54,3 +54,5 @@ env/
 *.key
 credentials.json
 secrets.json
+
+.vercel

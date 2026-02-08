@@ -45,6 +45,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       children,
+      onDrag,
+      onDragStart,
+      onDragEnd,
       ...props
     },
     ref
@@ -65,7 +68,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
         disabled={isDisabled}
-        {...(props as any)}
+        {...props}
       >
         {isLoading ? (
           <>

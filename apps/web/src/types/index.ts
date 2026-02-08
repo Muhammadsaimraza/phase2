@@ -120,6 +120,6 @@ export interface ValidationError {
   type: string;
 }
 
-export interface ValidationErrorResponse extends ProblemDetail {
+export interface ValidationErrorResponse extends Omit<ProblemDetail, 'detail'> {
   detail: ValidationError[];
 }

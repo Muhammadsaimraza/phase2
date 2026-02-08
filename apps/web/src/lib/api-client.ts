@@ -82,10 +82,10 @@ export async function apiRequest<T>(
 
     try {
       const errorBody = (await response.json()) as ProblemDetail | { detail: string };
-      if ("detail" in errorBody) {
+      if ("detail" in errorBody && errorBody.detail) {
         errorDetail = errorBody.detail;
       }
-      if ("type" in errorBody) {
+      if ("type" in errorBody && errorBody.type) {
         errorType = errorBody.type;
       }
     } catch {

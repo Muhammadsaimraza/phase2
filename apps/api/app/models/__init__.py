@@ -1,7 +1,7 @@
 # Models package
 from .user import User, UserBase, UserCreate, UserRead, UserUpdate
 from .session import Session, SessionBase, SessionCreate, SessionRead
-from .todo import Todo, TodoBase, TodoCreate, TodoRead, TodoUpdate, TodoStatus, TodoPriority
+from .todo import Todo, TodoBase, TodoCreate, TodoRead, TodoUpdate
 
 __all__ = [
     # User
@@ -21,6 +21,4 @@ __all__ = [
     "TodoCreate",
     "TodoRead",
     "TodoUpdate",
-    "TodoStatus",
-    "TodoPriority",
 ]

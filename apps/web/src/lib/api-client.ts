@@ -2,7 +2,7 @@
  * API Client - Typed fetch wrapper for backend communication
  */
 
-import type { ProblemDetail } from "@repo/shared";
+import type { ProblemDetail } from "@/types";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -37,6 +37,11 @@ export async function apiRequest<T>(
   endpoint: string,
   options: RequestOptions = {}
 ): Promise<T> {
+  // Only proceed if in browser context
+  if (typeof window === "undefined") {
+    throw new Error("API requests can only be made from the browser");
+  }
+
   const { body, headers: customHeaders, ...rest } = options;
 
   const headers: HeadersInit = {
@@ -50,9 +55,10 @@ export async function apiRequest<T>(
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
   }
 
+  // Build config with proper typing
   const config: RequestInit = {
-    ...rest,
     headers,
+    ...rest,
   };
 
   if (body !== undefined) {
@@ -60,7 +66,14 @@ export async function apiRequest<T>(
   }
 
   const url = `${API_BASE_URL}${endpoint}`;
-  const response = await fetch(url, config);
+
+  let response: Response;
+  try {
+    response = await fetch(url, config);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Network error occurred";
+    throw new ApiError(0, `Network error: ${message}`);
+  }
 
   // Handle non-OK responses
   if (!response.ok) {
@@ -76,7 +89,7 @@ export async function apiRequest<T>(
         errorType = errorBody.type;
       }
     } catch {
-      errorDetail = response.statusText;
+      errorDetail = response.statusText || "Unknown error";
     }
 
     throw new ApiError(response.status, errorDetail, errorType);

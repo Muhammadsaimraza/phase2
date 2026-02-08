@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TodoEmptyState - Empty state for todo list
+ * TodoEmptyState - Empty state for todo list with amazing design
  */
 
 import { motion } from "framer-motion";
@@ -14,6 +14,11 @@ interface TodoEmptyStateProps {
   onCreateTodo?: () => void;
 }
 
+const floatingAnimation = {
+  initial: { y: -20, opacity: 0 },
+  animate: { y: 0, opacity: 1, transition: { duration: 0.6 } },
+};
+
 export function TodoEmptyState({
   hasFilters,
   onClearFilters,
@@ -21,59 +26,102 @@ export function TodoEmptyState({
 }: TodoEmptyStateProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 py-12 text-center"
+      className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-200 bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 py-16 px-6 text-center shadow-sm"
     >
-      <div className="mb-4 rounded-full bg-gray-100 p-3">
-        <svg
-          className="h-8 w-8 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      {/* Animated Icon */}
+      <motion.div
+        {...floatingAnimation}
+        className="mb-6 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 p-6 shadow-lg"
+      >
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-          />
-        </svg>
-      </div>
+          <svg
+            className="h-12 w-12 text-cyan-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+            />
+          </svg>
+        </motion.div>
+      </motion.div>
 
       {hasFilters ? (
         <>
-          <h3 className="text-lg font-semibold text-gray-900">
-            No matching todos
-          </h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <motion.h3
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"
+          >
+            No matching tasks
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mt-3 text-base text-gray-600 max-w-sm"
+          >
             Try adjusting your filters to see more results.
-          </p>
+          </motion.p>
           {onClearFilters && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={onClearFilters}
-              className="mt-4"
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              Clear Filters
-            </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={onClearFilters}
+                className="mt-6 shadow-md hover:shadow-lg"
+              >
+                Clear Filters
+              </Button>
+            </motion.div>
           )}
         </>
       ) : (
         <>
-          <h3 className="text-lg font-semibold text-gray-900">No todos yet</h3>
-          <p className="mt-1 text-sm text-gray-500">
-            Get started by creating your first todo.
-          </p>
+          <motion.h3
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"
+          >
+            No tasks yet
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mt-3 text-base text-gray-600 max-w-sm"
+          >
+            Start your productivity journey by creating your first task. Let's make today productive! 🚀
+          </motion.p>
           {onCreateTodo && (
-            <Button
-              onClick={onCreateTodo}
-              className="mt-4"
-              leftIcon={<PlusIcon className="h-4 w-4" />}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              Create Todo
-            </Button>
+              <Button
+                onClick={onCreateTodo}
+                className="mt-6 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-md hover:shadow-lg"
+                leftIcon={<PlusIcon className="h-5 w-5" />}
+              >
+                Create Your First Task
+              </Button>
+            </motion.div>
           )}
         </>
       )}

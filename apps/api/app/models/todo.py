@@ -2,26 +2,30 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
+from sqlalchemy import String
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from .user import User
 
+# String constants for status and priority options
+TODO_STATUSES = ["pending", "in_progress", "completed"]
+TODO_PRIORITIES = ["low", "medium", "high"]
 
+
+# Enum types for validation
 class TodoStatus(str, Enum):
-    """Todo status options."""
-
+    """Todo status enumeration."""
     PENDING = "pending"
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
 
 
 class TodoPriority(str, Enum):
-    """Todo priority levels."""
-
+    """Todo priority enumeration."""
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
@@ -40,12 +44,14 @@ class TodoBase(SQLModel):
         max_length=2000,
         description="Optional detailed description",
     )
-    status: TodoStatus = Field(
-        default=TodoStatus.PENDING,
+    status: str = Field(
+        default="pending",
+        max_length=20,
         description="Current status",
     )
-    priority: TodoPriority = Field(
-        default=TodoPriority.MEDIUM,
+    priority: str = Field(
+        default="medium",
+        max_length=10,
         description="Priority level",
     )
     due_date: datetime | None = Field(
@@ -100,8 +106,8 @@ class TodoCreate(SQLModel):
         max_length=2000,
         description="Optional description",
     )
-    priority: TodoPriority = Field(
-        default=TodoPriority.MEDIUM,
+    priority: str = Field(
+        default="medium",
         description="Priority level",
     )
     due_date: datetime | None = Field(
@@ -124,11 +130,11 @@ class TodoUpdate(SQLModel):
         max_length=2000,
         description="Updated description",
     )
-    status: TodoStatus | None = Field(
+    status: str | None = Field(
         default=None,
         description="Updated status",
     )
-    priority: TodoPriority | None = Field(
+    priority: str | None = Field(
         default=None,
         description="Updated priority",
     )

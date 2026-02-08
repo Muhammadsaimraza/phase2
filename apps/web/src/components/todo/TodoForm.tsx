@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import type { Todo, TodoCreate, TodoPriority } from "@repo/shared";
+import type { Todo, TodoCreate, TodoPriority } from "@/types";
 import { Button, Input } from "@/components/ui";
 
 const todoSchema = z.object({
@@ -80,11 +80,11 @@ export function TodoForm({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="space-y-4"
+      className="space-y-5"
     >
       {/* Title */}
       <Input
-        label="Title"
+        label="Task Title"
         placeholder="What needs to be done?"
         error={errors.title?.message}
         disabled={loading}
@@ -92,15 +92,15 @@ export function TodoForm({
       />
 
       {/* Description */}
-      <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">
           Description
         </label>
         <textarea
-          placeholder="Add more details (optional)"
+          placeholder="Add more details... (optional)"
           rows={3}
           disabled={loading}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:bg-gray-50"
+          className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:bg-gray-50 transition-colors"
           {...register("description")}
         />
         {errors.description && (
@@ -109,38 +109,40 @@ export function TodoForm({
       </div>
 
       {/* Priority */}
-      <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Priority
-        </label>
-        <select
-          disabled={loading}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:bg-gray-50"
-          {...register("priority")}
-        >
-          {priorityOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Priority
+          </label>
+          <select
+            disabled={loading}
+            className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:bg-gray-50 transition-colors"
+            {...register("priority")}
+          >
+            {priorityOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Due Date */}
-      <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Due Date
-        </label>
-        <input
-          type="date"
-          disabled={loading}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:bg-gray-50"
-          {...register("due_date")}
-        />
+        {/* Due Date */}
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Due Date
+          </label>
+          <input
+            type="date"
+            disabled={loading}
+            className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:bg-gray-50 transition-colors"
+            {...register("due_date")}
+          />
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 pt-2">
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
         {onCancel && (
           <Button
             type="button"
@@ -151,8 +153,12 @@ export function TodoForm({
             Cancel
           </Button>
         )}
-        <Button type="submit" isLoading={loading}>
-          {isEditing ? "Update Todo" : "Create Todo"}
+        <Button
+          type="submit"
+          isLoading={loading}
+          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-md hover:shadow-lg"
+        >
+          {isEditing ? "Save Changes" : "Create Task"}
         </Button>
       </div>
     </motion.form>

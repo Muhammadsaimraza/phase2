@@ -8,7 +8,7 @@ import type {
   TodoUpdate,
   TodoListResponse,
   TodoListParams,
-} from "@repo/shared";
+} from "@/types";
 import { api } from "./api-client";
 
 const TODOS_BASE = "/api/v1/todos";

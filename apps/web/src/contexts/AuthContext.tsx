@@ -13,7 +13,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { User, UserLogin, UserRegister } from "@repo/shared";
+import type { User, UserLogin, UserRegister } from "@/types";
 import {
   authClient,
   tokenStorage,

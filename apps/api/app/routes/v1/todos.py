@@ -46,12 +46,17 @@ async def create_todo(
     - **priority**: low, medium (default), or high
     - **due_date**: Optional due date
     """
+    # Strip timezone from due_date if present (database uses naive datetimes)
+    due_date = data.due_date
+    if due_date and due_date.tzinfo is not None:
+        due_date = due_date.replace(tzinfo=None)
+
     todo = Todo(
         user_id=user_id,
         title=data.title,
         description=data.description,
         priority=data.priority,
-        due_date=data.due_date,
+        due_date=due_date,
     )
 
     session.add(todo)
@@ -217,6 +222,9 @@ async def update_todo(
     # Update only provided fields
     update_data = data.model_dump(exclude_unset=True)
     for field, value in update_data.items():
+        # Strip timezone from due_date if present (database uses naive datetimes)
+        if field == "due_date" and value and hasattr(value, "tzinfo") and value.tzinfo is not None:
+            value = value.replace(tzinfo=None)
         setattr(todo, field, value)
 
     # If status changed to completed, set completed_at
@@ -265,7 +273,7 @@ async def delete_todo(
             detail="Todo not found",
         )
 
-    await session.delete(todo)
+    session.delete(todo)
     await session.commit()
 
 

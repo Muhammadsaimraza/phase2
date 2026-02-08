@@ -7,7 +7,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import type { Todo, TodoStatus, TodoPriority, TodoCreate, TodoUpdate } from "@repo/shared";
+import type { Todo, TodoStatus, TodoPriority, TodoCreate, TodoUpdate } from "@/types";
 import { todoClient } from "@/lib/todo-client";
 import { ApiError } from "@/lib";
 import { Button } from "@/components/ui";
@@ -151,7 +151,7 @@ export function TodoList({ initialTodos = [] }: TodoListProps) {
   // Edit todo
   const handleEdit = (todo: Todo) => {
     setEditingTodo(todo);
-    setShowForm(false);
+    setShowForm(true);
   };
 
   const handleCancelForm = () => {
@@ -160,29 +160,30 @@ export function TodoList({ initialTodos = [] }: TodoListProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Todos</h1>
-          <p className="text-sm text-gray-500">{total} items total</p>
+          <h2 className="text-3xl font-bold text-gray-900">Task List</h2>
+          <p className="text-sm text-gray-600 mt-1">{total} task{total !== 1 ? 's' : ''} total</p>
         </div>
         <Button
           onClick={() => {
             setShowForm(true);
             setEditingTodo(null);
           }}
-          leftIcon={<PlusIcon className="h-4 w-4" />}
+          leftIcon={<PlusIcon className="h-5 w-5" />}
+          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-md hover:shadow-lg"
         >
-          New Todo
+          New Task
         </Button>
       </div>
 
       {/* Create/Edit Form */}
       {(showForm || editingTodo) && (
-        <div className="rounded-lg border bg-white p-4 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold">
-            {editingTodo ? "Edit Todo" : "Create New Todo"}
+        <div className="rounded-xl border border-blue-200/40 bg-gradient-to-br from-white to-blue-50/30 p-6 shadow-lg">
+          <h2 className="mb-6 text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+            {editingTodo ? "Edit Task" : "Create New Task"}
           </h2>
           <TodoForm
             todo={editingTodo || undefined}
@@ -209,14 +210,17 @@ export function TodoList({ initialTodos = [] }: TodoListProps) {
 
       {/* Todo List */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
+        <div className="flex items-center justify-center py-20">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+            <p className="text-gray-500">Loading your tasks...</p>
+          </div>
         </div>
       ) : error ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-center text-red-700">
-          {error}
-          <Button variant="ghost" size="sm" onClick={fetchTodos} className="ml-2">
-            Retry
+        <div className="rounded-xl border border-red-200 bg-gradient-to-br from-red-50 to-rose-50 p-6 text-center">
+          <p className="text-red-700 font-medium mb-4">{error}</p>
+          <Button variant="secondary" size="sm" onClick={fetchTodos}>
+            Try Again
           </Button>
         </div>
       ) : todos.length === 0 ? (
@@ -229,7 +233,7 @@ export function TodoList({ initialTodos = [] }: TodoListProps) {
           onCreateTodo={() => setShowForm(true)}
         />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <AnimatePresence mode="popLayout">
             {todos.map((todo) => (
               <TodoItem
@@ -246,16 +250,16 @@ export function TodoList({ initialTodos = [] }: TodoListProps) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-4">
+        <div className="flex items-center justify-center gap-3 pt-8">
           <Button
             variant="secondary"
             size="sm"
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
           >
-            Previous
+            ← Previous
           </Button>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm font-medium text-gray-700 px-4 py-2 rounded-lg bg-gray-100">
             Page {page} of {totalPages}
           </span>
           <Button
@@ -264,7 +268,7 @@ export function TodoList({ initialTodos = [] }: TodoListProps) {
             disabled={page === totalPages}
             onClick={() => setPage((p) => p + 1)}
           >
-            Next
+            Next →
           </Button>
         </div>
       )}

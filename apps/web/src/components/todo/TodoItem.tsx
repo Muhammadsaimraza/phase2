@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import type { Todo, TodoStatus, TodoPriority } from "@repo/shared";
+import type { Todo, TodoStatus, TodoPriority } from "@/types";
 import { cn } from "@/lib";
 import { Button } from "@/components/ui";
 import {
@@ -25,15 +25,15 @@ interface TodoItemProps {
 }
 
 const priorityColors: Record<TodoPriority, string> = {
-  low: "bg-gray-100 text-gray-600",
-  medium: "bg-yellow-100 text-yellow-700",
-  high: "bg-red-100 text-red-700",
+  low: "bg-emerald-100/80 text-emerald-700 border border-emerald-200",
+  medium: "bg-amber-100/80 text-amber-700 border border-amber-200",
+  high: "bg-rose-100/80 text-rose-700 border border-rose-200",
 };
 
 const statusColors: Record<TodoStatus, string> = {
-  pending: "bg-gray-100 text-gray-600",
-  in_progress: "bg-blue-100 text-blue-700",
-  completed: "bg-green-100 text-green-700",
+  pending: "bg-slate-100/80 text-slate-700 border border-slate-200",
+  in_progress: "bg-cyan-100/80 text-cyan-700 border border-cyan-200",
+  completed: "bg-teal-100/80 text-teal-700 border border-teal-200",
 };
 
 export function TodoItem({
@@ -81,8 +81,8 @@ export function TodoItem({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -100 }}
       className={cn(
-        "group rounded-lg border bg-white p-4 shadow-sm transition-shadow hover:shadow-md",
-        isCompleted && "bg-gray-50 opacity-75",
+        "group rounded-xl border bg-white p-5 shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5",
+        isCompleted && "bg-gradient-to-br from-slate-50 to-slate-100 opacity-75",
         isDeleting && "opacity-50"
       )}
     >
@@ -92,13 +92,13 @@ export function TodoItem({
           onClick={handleComplete}
           disabled={isCompleted || isLoading}
           className={cn(
-            "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors",
+            "mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all hover:scale-110",
             isCompleted
-              ? "border-green-500 bg-green-500 text-white"
-              : "border-gray-300 hover:border-primary-500"
+              ? "border-teal-500 bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-md"
+              : "border-gray-300 hover:border-teal-400 hover:shadow-sm"
           )}
         >
-          {isCompleted && <CheckIcon className="h-3 w-3" />}
+          {isCompleted && <CheckIcon className="h-4 w-4" />}
         </button>
 
         {/* Content */}
@@ -106,7 +106,7 @@ export function TodoItem({
           <div className="flex items-start justify-between gap-2">
             <h3
               className={cn(
-                "font-medium text-gray-900",
+                "font-semibold text-gray-900 text-base leading-snug",
                 isCompleted && "text-gray-500 line-through"
               )}
             >
@@ -114,7 +114,7 @@ export function TodoItem({
             </h3>
 
             {/* Actions (shown on hover) */}
-            <div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="flex shrink-0 items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
               {onEdit && (
                 <Button
                   variant="ghost"

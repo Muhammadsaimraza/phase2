@@ -7,7 +7,7 @@ import type {
   User,
   UserLogin,
   UserRegister,
-} from "@repo/shared";
+} from "@/types";
 import { api, ApiError } from "./api-client";
 
 // Storage keys
